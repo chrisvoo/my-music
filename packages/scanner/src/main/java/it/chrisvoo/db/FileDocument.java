@@ -7,6 +7,7 @@ import org.bson.types.ObjectId;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
@@ -109,6 +110,21 @@ public class FileDocument {
                 ID3v24Tag theTag = (ID3v24Tag) tag;
                 setYear(theTag.getRecordingTime());
             }
+        }
+    }
+
+    /**
+     * In case the metadata aren't readable, call this method to get the file's size.
+     * @param p The Path.
+     */
+    public void calculateSize(Path p) {
+        try {
+            this.size = Files.size(p);
+        } catch (IOException e) {
+            System.err.println(
+                "Cannot read file's size for " +
+                p.toFile().getName() + ": " + e.getMessage()
+            );
         }
     }
 

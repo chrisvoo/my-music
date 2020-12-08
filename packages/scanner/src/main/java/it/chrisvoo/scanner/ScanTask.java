@@ -33,24 +33,30 @@ public class ScanTask extends RecursiveTask<ScanResult> {
     }
 
     private void parsePath(Path path, List<WriteModel<FileDocument>> docs, ScanResult result) {
+        FileDocument audioFile;
         try {
-            FileDocument audioFile = new FileDocument(new Mp3File(path));
-            audioFile.setFileName(path.normalize().toAbsolutePath().toString());
-
-            docs.add(
-                    new ReplaceOneModel<>(
-                            eq( "filename", audioFile.getFileName()),
-                            audioFile,
-                            new ReplaceOptions().upsert(true)
-                    )
-            );
-
-            result
-                    .joinScannedFiles(1)
-                    .joinBytes(audioFile.getSize());
+            // If for some reasons, metadata aren't readable, we just store the file path
+            audioFile = new FileDocument(new Mp3File(path));
         } catch (Exception e) {
             result.addError(path, e.getMessage());
+            audioFile = new FileDocument();
+            audioFile.calculateSize(path);
         }
+
+        audioFile.setFileName(path.normalize().toAbsolutePath().toString());
+
+        docs.add(
+                new ReplaceOneModel<>(
+                        eq( "filename", audioFile.getFileName()),
+                        audioFile,
+                        new ReplaceOptions().upsert(true)
+                )
+        );
+
+        result
+                .joinScannedFiles(1)
+                .joinBytes(audioFile.getSize());
+
     }
 
     private void saveIntoDb(List<WriteModel<FileDocument>> docs, ScanResult result) throws Throwable {
