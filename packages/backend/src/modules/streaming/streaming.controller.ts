@@ -2,6 +2,7 @@ import {
   Controller,
   DefaultValuePipe,
   Get,
+  HttpStatus,
   Param,
   ParseIntPipe,
   Query,
@@ -23,13 +24,34 @@ export class StreamingController {
    * @param {Response} response Express response
    */
   @Get('track/:id')
-  playTrack(
+  async playTrack(
     @Param('id') id: string,
     @Query('skip', new DefaultValuePipe(-1), ParseIntPipe) skip: number,
     @Res() response: Response,
   ) {
-    const filePath = '';
-    const stat = fs.statSync(filePath);
+    const musicFile = await this.service.getTrack(id);
+
+    if (!musicFile) {
+      response.status(HttpStatus.UNPROCESSABLE_ENTITY).json({
+        error: true,
+        message: `Cannot find any file with ID ${id} in the database`,
+      });
+      return;
+    }
+
+    let stat;
+
+    try {
+      stat = await fs.promises.stat(musicFile.filename);
+    } catch (e) {
+      response.status(HttpStatus.UNPROCESSABLE_ENTITY).json({
+        error: true,
+        message: `Cannot find any file named ${musicFile.filename} in the file system`,
+      });
+      console.error(e.message);
+      return;
+    }
+
     const startByte = skip !== -1 ? skip : 0;
 
     response.writeHead(200, {
@@ -37,6 +59,8 @@ export class StreamingController {
       'Content-Length': stat.size - startByte,
     });
 
-    fs.createReadStream(filePath, { start: startByte }).pipe(response);
+    fs.createReadStream(musicFile.filename, { start: startByte }).pipe(
+      response,
+    );
   }
 }

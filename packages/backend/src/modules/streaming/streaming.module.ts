@@ -1,9 +1,13 @@
 import { Module } from '@nestjs/common';
 import { StreamingController } from './streaming.controller';
+import { MongooseModule } from '@nestjs/mongoose';
 import { StreamingService } from './streaming.service';
+import { MusicFileSchema } from '../../db/schemas/MusicFile.schema';
 
 @Module({
-  imports: [],
+  imports: [
+    MongooseModule.forFeature([{ name: 'files', schema: MusicFileSchema }]),
+  ],
   controllers: [StreamingController],
   providers: [StreamingService],
 })
