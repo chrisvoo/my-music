@@ -9,7 +9,7 @@ import {
   Res,
 } from '@nestjs/common';
 import { Response } from 'express';
-import fs from 'fs';
+import * as fs from 'fs';
 import { StreamingService } from './streaming.service';
 
 @Controller('play')
@@ -32,24 +32,22 @@ export class StreamingController {
     const musicFile = await this.service.getTrack(id);
 
     if (!musicFile) {
-      response.status(HttpStatus.UNPROCESSABLE_ENTITY).json({
+      return response.status(HttpStatus.UNPROCESSABLE_ENTITY).json({
         error: true,
         message: `Cannot find any file with ID ${id} in the database`,
       });
-      return;
     }
 
-    let stat;
+    let stat: fs.Stats;
 
     try {
       stat = await fs.promises.stat(musicFile.filename);
     } catch (e) {
-      response.status(HttpStatus.UNPROCESSABLE_ENTITY).json({
+      console.error(e.message);
+      return response.status(HttpStatus.UNPROCESSABLE_ENTITY).json({
         error: true,
         message: `Cannot find any file named ${musicFile.filename} in the file system`,
       });
-      console.error(e.message);
-      return;
     }
 
     const startByte = skip !== -1 ? skip : 0;
@@ -59,8 +57,10 @@ export class StreamingController {
       'Content-Length': stat.size - startByte,
     });
 
-    fs.createReadStream(musicFile.filename, { start: startByte }).pipe(
-      response,
-    );
+    const readStream = fs.createReadStream(musicFile.filename, {
+      start: startByte,
+    });
+    readStream.on('end', () => response.end());
+    readStream.pipe(response);
   }
 }
