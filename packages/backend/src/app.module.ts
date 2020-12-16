@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MonitoringModule } from './modules/monitoring/monitoring.module';
 import { StreamingModule } from './modules/streaming/streaming.module';
+import { ApiModule } from './modules/api/api.module';
 import { MongooseModule } from '@nestjs/mongoose';
 
 /**
@@ -8,6 +9,7 @@ import { MongooseModule } from '@nestjs/mongoose';
  */
 @Module({
   imports: [
+    ApiModule,
     MonitoringModule,
     StreamingModule,
     MongooseModule.forRoot(process.env.MONGO_URI, {

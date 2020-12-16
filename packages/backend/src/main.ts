@@ -11,7 +11,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   // middlewares and filters
   app.enableCors({ credentials: true, origin: process.env.FRONTEND_URL });
-  // app.useGlobalFilters(new AllExceptionsFilter());
+  app.useGlobalFilters(new AllExceptionsFilter());
   app.useGlobalInterceptors(new TimeoutInterceptor());
 
   await app.listen(3001);

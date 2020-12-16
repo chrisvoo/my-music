@@ -8,7 +8,7 @@ import {
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
-  catch(exception: unknown, host: ArgumentsHost) {
+  catch(exception: Error, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
     const request = ctx.getRequest();
@@ -22,6 +22,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
       statusCode: status,
       timestamp: new Date().toISOString(),
       path: request.url,
+      message: exception.message,
     });
   }
 }
