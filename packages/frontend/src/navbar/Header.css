@@ -1,0 +1,7 @@
+.nav-link, #search-btn, input[type="search"] {
+  font-size: 1.25rem;
+}
+
+.navbar-brand {
+  font-size: 1.3rem;
+}
