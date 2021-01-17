@@ -6,7 +6,7 @@ import { MusicFileSchema } from '../../db/schemas/MusicFile.schema';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: 'files', schema: MusicFileSchema }]),
+    MongooseModule.forFeature([{ name: 'files', schema: MusicFileSchema, collection: 'files' }]),
   ],
   controllers: [StreamingController],
   providers: [StreamingService],

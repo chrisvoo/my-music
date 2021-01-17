@@ -3,5 +3,11 @@
   "private": true,
   "devDependencies": {
     "lerna": "^3.22.1"
+  },
+  "scripts": {
+    "clean_backend": "shx rm -r packages/backend/dist && shx rm packages/backend/package-lock.json",
+    "clean_frontend": "shx rm packages/frontend/package-lock.json",
+    "clean": "lerna clean && npm run clean_backend && npm run clean_frontend && shx rm -r node_modules",
+    "install": "lerna bootstrap --hoist"
   }
 }

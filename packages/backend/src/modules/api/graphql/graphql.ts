@@ -65,7 +65,7 @@ export interface FilesConnection {
 }
 
 export interface File {
-    id?: string;
+    id: string;
     album_image?: string;
     album_image_mime_type?: string;
     album_title?: string;
