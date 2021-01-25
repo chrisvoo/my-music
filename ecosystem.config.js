@@ -14,23 +14,10 @@ module.exports = {
       name: 'backend',
       cwd: './packages/backend',
       instances: 1,
-      autorestart: false, // watch specified by nest cli
-      watch: false,
+      autorestart: false, // done by nodemon
+      watch: false,       // done by nodemon
       script: 'npm',
-      args: 'start',
+      args: 'run dev',
     }
   ],
-
-  deploy : {
-    production : {
-      user : 'SSH_USERNAME',
-      host : 'SSH_HOSTMACHINE',
-      ref  : 'origin/master',
-      repo : 'GIT_REPOSITORY',
-      path : 'DESTINATION_PATH',
-      'pre-deploy-local': '',
-      'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env production',
-      'pre-setup': ''
-    }
-  }
 };
