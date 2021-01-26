@@ -41,6 +41,7 @@
         "jsx-a11y/role-supports-aria-props": "off",
         "react/jsx-one-expression-per-line": "off",
         "jsx-a11y/label-has-associated-control": "off",
-        "jsx-a11y/no-autofocus": "off"
+        "jsx-a11y/no-autofocus": "off",
+        "linebreak-style": 0
     }
 }

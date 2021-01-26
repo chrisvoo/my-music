@@ -1,0 +1,7 @@
+.progress-bar {
+    background-color: transparent;
+}
+
+.music-player-panel {
+    z-index: 1030!important; /* same as navbar */
+}

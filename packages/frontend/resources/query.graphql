@@ -1,0 +1,45 @@
+
+# Write your query or mutation here
+query getTracks(
+  $first: Int, 
+  $after: String, 
+  $sort: [InputFileSort], 
+  $search: String) {
+    getFiles(
+        first: $first, 
+        sort: $sort, 
+        after: $after, 
+        fileSearch: $search) 
+        {
+            edges {
+            cursor
+            node {
+                id
+                artist
+                album_title
+                bitrate
+                bitrate_type
+                duration
+                filename
+                size
+                year
+            }
+            }
+            pageInfo {
+            hasNextPage
+            lastCursor
+            }  
+    }
+}
+
+{
+  "first": 20,
+  "after": null,
+  "sort": [
+    {
+      "field": "filename",
+      "direction": "ASC"
+    }
+  ],
+  "search": null
+}

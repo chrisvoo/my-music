@@ -26,7 +26,7 @@ export default function bootstrapMongoose(): Promise<number> {
       }
 
       logger.info(
-        `Connected to${process.env.MONGO_URI}. readyState: ${mongoose.connection.readyState}`,
+        `Connected to ${process.env.MONGO_URI}. readyState: ${mongoose.connection.readyState}`,
       );
       resolve(mongoose.connection.readyState);
     });
