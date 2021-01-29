@@ -1,3 +1,7 @@
+header {
+  z-index: 1000;
+}
+
 .nav-link {
   font-size: 1.25rem;
 }

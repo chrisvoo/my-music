@@ -2,6 +2,7 @@
     background-color: transparent;
 }
 
-.music-player-panel {
-    z-index: 1030!important; /* same as navbar */
+/* we manage the playlist and hide the one created by the React player module */
+.audio-lists-panel {
+    display: none;
 }

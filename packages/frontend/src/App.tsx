@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import ReactJkMusicPlayer from 'react-jinke-music-player';
-// import 'react-jinke-music-player/assets/index.css';
 import './player.css';
 import './custom_player.css';
 import { Header } from './navbar/Header';
@@ -12,19 +11,30 @@ function App() {
       <Header />
       <Main />
       <ReactJkMusicPlayer
+        autoPlay={false}
+        remember={false}
+        preload={false}
+        mode="full"
+        responsive={false} // always show bottom bar
+        toggleMode={false} // mini-full
+        defaultVolume={0.5}
+        showDownload={false}
+        showThemeSwitch={false}
+        autoHiddenCover // Auto hide the cover photo if no cover photo is available (bool)
+        spaceBar // Play and pause audio through space bar （Desktop effective）
+        quietUpdate // Don't interrupt current playing state when audio list updated
+        showDestroy={false} // Destroy player button display
+        onAudioListsPanelChange={(panelVisible: boolean) => {
+          console.log(panelVisible);
+        }}
         audioLists={[
           {
-            name: "Don't know why",
-            musicSrc: 'http://localhost:3001/play/600fdfddbeb062cc509b80b0',
-            duration: 186,
+            name: 'Behind blue eyes',
+            duration: 271,
+            musicSrc: 'http://localhost:3001/play/600fdfddbeb062cc509b809e',
+            singer: 'Limp Bizkit',
           },
         ]}
-        theme="dark"
-        locale="en_US"
-        mode="full"
-        showThemeSwitch={false}
-        responsive={false}
-        defaultPosition={{ bottom: 0, left: 0 }}
       />
     </>
   );
